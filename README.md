@@ -1,245 +1,306 @@
-# 🎙️ Voice Typing Tool — Local
+# Voice Typing Tool - Local
 
-A **local voice-to-text typing tool for Windows**, designed to turn spoken words into text directly on the desktop.
+A local Windows voice typing application under development.
 
-The goal is simple:
+The main application is built with **C# and .NET 10**. Python is currently used as an **experimental environment for testing Whisper, PyTorch, CUDA, and other machine-learning components** that may later be integrated into the application.
 
-> **Speak naturally → get text wherever you are typing.**
+The goal is to build a practical voice typing tool that performs speech recognition locally, without requiring audio to be sent to a cloud service.
 
-The application uses local speech recognition so that audio processing can be performed on the user's machine, without requiring a cloud transcription service.
+## Project Status
 
----
+🚧 **Early development**
 
-## ✨ Features
+The project currently contains:
 
-* 🎤 Record speech from the microphone
-* 📝 Convert speech to text
-* 💻 Local speech recognition
-* ⚡ Fast transcription using GPU acceleration when available
-* 🔒 No dependency on cloud speech APIs
-* 🪟 Designed for Windows desktop usage
-* 🧩 Modular architecture for future extensions
+* Initial Windows application structure
+* Audio recording experiments
+* Global keyboard hook
+* Python-based Whisper experiments
+* PyTorch/CUDA GPU testing
+* Development environment and tooling setup
 
-### Planned
-
-* [ ] Global keyboard shortcut to start/stop recording
-* [ ] Type transcription into the currently focused application
-* [ ] Push-to-talk mode
-* [ ] Automatic punctuation
-* [ ] Configurable transcription models
-* [ ] Voice activity detection
-* [ ] Transcription history
-* [ ] System tray integration
-* [ ] Configuration file / settings
-* [ ] Automated tests
-* [ ] CI pipeline
-* [ ] CD / release pipeline
-* [ ] Packaged Windows executable
+The architecture and implementation will evolve as the speech-recognition pipeline is developed.
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
-The project is intentionally being developed as a small, modular local application.
+The project currently has two distinct areas.
+
+### Windows Application
+
+The actual desktop application is implemented in **C# / .NET 10**.
 
 ```text
 ┌─────────────────────┐
-│      Microphone     │
+│   Windows Desktop   │
+│     Application     │
 └──────────┬──────────┘
            │
            ▼
 ┌─────────────────────┐
-│   Audio Capture     │
+│   Audio Recording   │
 └──────────┬──────────┘
            │
            ▼
 ┌─────────────────────┐
 │ Speech Recognition  │
-│      (Whisper)      │
+│   (integration TBD) │
 └──────────┬──────────┘
            │
            ▼
 ┌─────────────────────┐
-│  Text Processing    │
+│   Text Processing   │
 └──────────┬──────────┘
            │
            ▼
 ┌─────────────────────┐
-│   Keyboard Output   │
+│ Keyboard / Text     │
+│      Injection      │
 └─────────────────────┘
 ```
 
-The architecture will evolve as the application gains more functionality.
+### ML / Speech Experiments
 
----
-
-## 🧠 Technology
-
-Current technology stack:
-
-| Component             | Technology  |
-| --------------------- | ----------- |
-| Language              | Python      |
-| Environment           | `uv`        |
-| Speech recognition    | Whisper     |
-| ML framework          | PyTorch     |
-| Hardware acceleration | NVIDIA CUDA |
-| Platform              | Windows     |
-| Version control       | Git         |
-
-The project uses separate environments where appropriate to keep the development environment and ML dependencies manageable.
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-You will need:
-
-* Windows
-* Python
-* [`uv`](https://docs.astral.sh/uv/)
-* Git
-* NVIDIA GPU + CUDA support *(optional, but recommended for accelerated transcription)*
-
-### Clone the repository
-
-```bash
-git clone <repository-url>
-cd voice-typing
-```
-
-### Create the environment
-
-```bash
-uv sync
-```
-
-### Run the application
-
-```bash
-uv run python app.py
-```
-
-> The exact application entry point may change while the project is under development.
-
----
-
-## 🧪 Development
-
-The project is being developed incrementally, with experiments and implementation kept separate where practical.
-
-Typical workflow:
-
-```bash
-uv sync
-uv run python <script>
-```
-
-Run tests with:
-
-```bash
-uv run pytest
-```
-
-As the project matures, formatting, linting, testing, and type checking will become part of the automated development workflow.
-
----
-
-## 🔄 CI/CD
-
-CI/CD is planned as part of the project rather than being added as an afterthought.
-
-The intended pipeline will eventually cover:
+Python is currently being used separately to investigate and test machine-learning components.
 
 ```text
-Git Push
-   │
-   ▼
-┌───────────────┐
-│   Lint / Type │
-│    Checks     │
-└───────┬───────┘
+Python Experiments
         │
-        ▼
-┌───────────────┐
-│     Tests     │
-└───────┬───────┘
-        │
-        ▼
-┌───────────────┐
-│ Build / Package│
-└───────┬───────┘
-        │
-        ▼
-┌───────────────┐
-│    Release    │
-└───────────────┘
+        ├── Whisper
+        ├── PyTorch
+        ├── CUDA / GPU
+        └── Speech recognition experiments
 ```
 
-The initial CI pipeline will focus on:
-
-* dependency installation
-* code quality checks
-* automated tests
-* build verification
-
-CD will later be extended to produce distributable Windows releases.
+These experiments are used to understand performance, GPU acceleration, model behaviour, and possible approaches for integrating speech recognition into the Windows application.
 
 ---
 
-## 📁 Project Structure
+## Technology Stack
 
-The structure will evolve as implementation progresses.
+### Windows Application
+
+* **C#**
+* **.NET 10**
+* Windows APIs
+* Global keyboard hooks
+* Audio capture
+
+### ML / Experimental Environment
+
+* **Python**
+* **Whisper**
+* **PyTorch**
+* **NVIDIA CUDA**
+* `uv` for Python environment and dependency management
+
+### Development
+
+* Git
+* GitHub
+* Visual Studio Code
+* PowerShell
+
+---
+
+## Project Structure
 
 ```text
 voice-typing/
 │
-├── app.py
-├── pyproject.toml
-├── uv.lock
+├── Audio/
+│   └── AudioRecorder.cs
+│
+├── Input/
+│   └── GlobalKeyboardHook.cs
+│
+├── Program.cs
+├── voice-typing.csproj
+│
+├── test_whisper.py
+├── test_cuda_dll.py
+│
+├── install-dotnet10-sdk.ps1
+│
 ├── README.md
 ├── .gitignore
 │
-├── src/
-│   └── ...
-│
-├── tests/
-│   └── ...
-│
-└── .github/
-    └── workflows/
-        └── ...
+└── ...
 ```
 
----
+The C# source files belong to the Windows application.
 
-## 🎯 Project Goals
-
-This project is also an exercise in building a **complete AI-powered software application**, not just experimenting with a speech-recognition model.
-
-The long-term focus is therefore on:
-
-* clean software architecture
-* local AI inference
-* hardware acceleration
-* reproducible environments
-* automated testing
-* CI/CD
-* packaging and deployment
-* maintainability
+The Python scripts are currently experimental/testing code and are not the primary implementation of the application.
 
 ---
 
-## 📌 Status
+## Local Speech Recognition
 
-**🚧 Early development**
+One of the main objectives is to use local speech recognition rather than relying on a cloud transcription service.
 
-The project is currently being built incrementally. APIs, architecture, and implementation details may change.
+The project is currently evaluating **Whisper** for this purpose.
+
+The Python environment is being used to answer questions such as:
+
+* Which Whisper model is appropriate?
+* How well does transcription perform locally?
+* Can the NVIDIA GPU accelerate inference effectively?
+* What are the memory and performance requirements?
+* How should audio be captured and passed to the speech-recognition model?
+* What is the most practical way to integrate the ML component with the Windows application?
+
+These questions will be resolved experimentally before the final application architecture is established.
 
 ---
 
-## 📄 License
+## GPU Acceleration
 
-License to be decided.
+The project is also investigating GPU-accelerated speech recognition using:
+
+* NVIDIA GPU
+* CUDA
+* PyTorch
+* Whisper
+
+GPU-related experiments are currently performed through Python.
+
+This allows the ML components to be tested independently from the Windows application while the application architecture is being developed.
+
+---
+
+## Development Philosophy
+
+The project is being developed incrementally.
+
+The approach is:
+
+```text
+Windows application
+        │
+        ▼
+Audio capture
+        │
+        ▼
+Speech recognition experiments
+        │
+        ▼
+Evaluate Whisper / ML options
+        │
+        ▼
+Choose integration approach
+        │
+        ▼
+Integrate into application
+        │
+        ▼
+Text processing
+        │
+        ▼
+System-wide text input
+```
+
+The Python experiments are therefore intentionally kept separate from the main application until the speech-recognition approach has been validated.
+
+---
+
+## Planned Features
+
+The exact implementation is still evolving, but the intended application direction includes:
+
+* 🎙️ Local microphone recording
+* 🗣️ Local speech-to-text
+* ⌨️ System-wide text input
+* 🪟 Windows desktop integration
+* ⚡ GPU acceleration where practical
+* 🔒 Local/private processing
+* ⚙️ Configurable speech-recognition models
+* 📋 Text cleanup and processing
+* 🚀 Fast voice-to-text workflow
+
+---
+
+## Development Roadmap
+
+### Phase 1 — Foundation
+
+* [x] Create .NET application
+* [x] Set up Git repository
+* [x] Implement initial audio recording component
+* [x] Implement global keyboard hook
+* [x] Set up Python ML experimentation environment
+* [x] Test Whisper
+* [x] Test PyTorch/CUDA
+
+### Phase 2 — Speech Recognition
+
+* [ ] Evaluate Whisper models
+* [ ] Measure transcription performance
+* [ ] Optimize GPU inference
+* [ ] Establish audio format and processing pipeline
+* [ ] Decide application/ML integration architecture
+
+### Phase 3 — Application Integration
+
+* [ ] Integrate speech recognition into the Windows application
+* [ ] Implement voice-to-text workflow
+* [ ] Implement text injection
+* [ ] Add configurable activation mechanism
+* [ ] Improve error handling
+
+### Phase 4 — Production Quality
+
+* [ ] Automated tests
+* [ ] Logging and diagnostics
+* [ ] Configuration management
+* [ ] Performance optimization
+* [ ] Packaging
+* [ ] Windows installer / distributable application
+
+### Phase 5 — CI/CD
+
+* [ ] GitHub Actions CI
+* [ ] Automated builds
+* [ ] Automated tests
+* [ ] Release packaging
+* [ ] GitHub Releases
+
+---
+
+## Why Local?
+
+The project is intended to provide a voice typing workflow where speech can be processed locally.
+
+Potential advantages include:
+
+* Privacy
+* No dependency on a remote transcription API
+* Offline capability
+* Control over the speech-recognition model
+* Ability to optimize the system for local hardware
+
+The project will evaluate the practical trade-offs between model size, accuracy, latency, and hardware requirements.
+
+---
+
+## Current Focus
+
+The immediate focus is **understanding and validating the speech-recognition component**.
+
+The Windows application and Python ML experiments are being developed independently so that the ML approach can be tested without prematurely committing the application to a particular integration architecture.
+
+---
+
+## License
+
+This project is open source and distributed under the **MIT License**.
+
+See [`LICENSE`](LICENSE) for details.
+
+---
+
+## Status
+
+This project is under active development.
+
+The architecture, dependencies, and implementation details may change as the project progresses.
